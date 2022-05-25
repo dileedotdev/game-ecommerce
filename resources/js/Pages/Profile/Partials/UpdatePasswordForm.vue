@@ -39,9 +39,7 @@ const updatePassword = () => {
 
 <template>
     <JetFormSection @submitted="updatePassword">
-        <template #title>
-            Update Password
-        </template>
+        <template #title> Update Password </template>
 
         <template #description>
             Ensure your account is using a long, random password to stay secure.
@@ -58,7 +56,10 @@ const updatePassword = () => {
                     class="mt-1 block w-full"
                     autocomplete="current-password"
                 />
-                <JetInputError :message="form.errors.current_password" class="mt-2" />
+                <JetInputError
+                    :message="form.errors.current_password"
+                    class="mt-2"
+                />
             </div>
 
             <div class="col-span-6 sm:col-span-4">
@@ -75,7 +76,10 @@ const updatePassword = () => {
             </div>
 
             <div class="col-span-6 sm:col-span-4">
-                <JetLabel for="password_confirmation" value="Confirm Password" />
+                <JetLabel
+                    for="password_confirmation"
+                    value="Confirm Password"
+                />
                 <JetInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -83,7 +87,10 @@ const updatePassword = () => {
                     class="mt-1 block w-full"
                     autocomplete="new-password"
                 />
-                <JetInputError :message="form.errors.password_confirmation" class="mt-2" />
+                <JetInputError
+                    :message="form.errors.password_confirmation"
+                    class="mt-2"
+                />
             </div>
         </template>
 
@@ -92,7 +99,10 @@ const updatePassword = () => {
                 Saved.
             </JetActionMessage>
 
-            <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <JetButton
+                :class="{ 'opacity-25': form.processing }"
+                :disabled="form.processing"
+            >
                 Save
             </JetButton>
         </template>

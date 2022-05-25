@@ -1,4 +1,4 @@
-const pages = import.meta.glob("../Pages/**/*.vue");
+const pages = import.meta.glob('../Pages/**/*.vue');
 
 export async function importPageComponent(name: string) {
     // eslint-disable-next-line no-restricted-syntax
