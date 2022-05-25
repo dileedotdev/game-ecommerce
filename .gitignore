@@ -14,3 +14,5 @@ yarn-error.log
 /.vscode
 .php-cs-fixer.cache
 build
+infection.log
+infection.html
