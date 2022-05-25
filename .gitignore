@@ -16,3 +16,7 @@ yarn-error.log
 build
 infection.log
 infection.html
+
+.phpstorm.meta.php
+_ide_helper.php
+_ide_helper_models.php
