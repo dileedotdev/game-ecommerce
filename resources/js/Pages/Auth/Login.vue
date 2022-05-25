@@ -14,7 +14,7 @@ defineProps({
 });
 
 const form = useForm({
-    email: '',
+    email: '', // it possible to use login instead of email
     password: '',
     remember: false,
 });
@@ -45,11 +45,11 @@ const submit = () => {
 
         <form @submit.prevent="submit">
             <div>
-                <JetLabel for="email" value="Email" />
+                <JetLabel for="email" value="Email/Login" />
                 <JetInput
                     id="email"
                     v-model="form.email"
-                    type="email"
+                    type="text"
                     class="mt-1 block w-full"
                     required
                     autofocus

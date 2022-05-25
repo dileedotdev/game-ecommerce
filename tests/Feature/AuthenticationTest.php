@@ -31,6 +31,19 @@ class AuthenticationTest extends TestCase
         $response->assertRedirect(RouteServiceProvider::HOME);
     }
 
+    public function testUserCanAuthenticateWithLoginInsteadOfEmail(): void
+    {
+        $user = User::factory()->create();
+
+        $response = $this->post('/login', [
+            'email' => $user->login,
+            'password' => 'password',
+        ]);
+
+        $this->assertAuthenticated();
+        $response->assertRedirect(RouteServiceProvider::HOME);
+    }
+
     public function testUsersCanNotAuthenticateWithInvalidPassword(): void
     {
         $user = User::factory()->create();

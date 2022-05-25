@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Providers\RouteServiceProvider;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Foundation\Testing\WithFaker;
 use Laravel\Fortify\Features;
 use Laravel\Jetstream\Jetstream;
 use Tests\TestCase;
@@ -11,6 +12,7 @@ use Tests\TestCase;
 class RegistrationTest extends TestCase
 {
     use RefreshDatabase;
+    use WithFaker;
 
     public function testRegistrationScreenCanBeRendered()
     {
@@ -42,6 +44,7 @@ class RegistrationTest extends TestCase
 
         $response = $this->post('/register', [
             'name' => 'Test User',
+            'login' => $this->faker->unique()->userName(),
             'email' => 'test@example.com',
             'password' => 'password',
             'password_confirmation' => 'password',

@@ -10,6 +10,7 @@ import JetValidationErrors from '@/Jetstream/ValidationErrors.vue';
 
 const form = useForm({
     name: '',
+    login: '',
     email: '',
     password: '',
     password_confirmation: '',
@@ -44,6 +45,19 @@ const submit = () => {
                     required
                     autofocus
                     autocomplete="name"
+                />
+            </div>
+
+            <div class="mt-4">
+                <JetLabel for="name" value="Login" />
+                <JetInput
+                    id="login"
+                    v-model="form.login"
+                    type="text"
+                    class="mt-1 block w-full"
+                    required
+                    autofocus
+                    autocomplete="login"
                 />
             </div>
 
