@@ -1,0 +1,70 @@
+name: Typescript linting
+
+on:
+  pull_request:
+    paths:
+      - '**.js'
+      - '**.ts'
+      - '**.vue'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - '.github/workflows/ts-linting.yml'
+  push:
+    paths:
+      - '**.js'
+      - '**.ts'
+      - '**.vue'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'tsconfig.json'
+      - '.github/workflows/ts-linting.yml'
+
+jobs:
+  vue-tsc:
+    runs-on: ubuntu-latest
+
+    steps:
+      # https://stackoverflow.com/questions/57612428/cloning-private-github-repository-within-organisation-in-actions
+      # - name: Setup access to the private repository
+      #   run: eval `ssh-agent -s` && ssh-add - <<< '${{ secrets.PRIVATE_SSH_KEY }}'
+
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.1'
+
+      - name: Copy .env file
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+
+      - name: Install composer dependencies
+        run: composer install -q --no-ansi --no-interaction --no-progress --prefer-dist
+
+      - name: Generate laravel key
+        run: php artisan key:generate
+
+      - name: Make database.sqlite file
+        run: touch database/database.sqlite
+
+      - name: Generate typescript helper files
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: database/database.sqlite
+        run: php artisan migrate:fresh --seed && php artisan typescript:transform
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Generate components.d.ts (unplugin-vue-components)
+        run: npm run build
+
+      - name: Run vue-tsc
+        run: npx vue-tsc --noEmit --skipLibCheck
