@@ -5,7 +5,8 @@
         "build": "vite build",
         "lint": "npm run lint:ts && npm run lint:es",
         "lint:ts": "vue-tsc --noEmit --skipLibCheck",
-        "lint:es": "eslint resources/**/*.{js,ts,vue}"
+        "lint:es": "eslint resources/**/*.{js,ts,vue}",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@inertiajs/inertia": "^0.11.0",
@@ -25,6 +26,8 @@
         "ziggy-js": "^1.4.6"
     },
     "devDependencies": {
+        "@commitlint/cli": "^17.0.0",
+        "@commitlint/config-conventional": "^17.0.0",
         "@types/lodash": "^4.14.182",
         "@types/ziggy-js": "^1.3.2",
         "@typescript-eslint/eslint-plugin": "^5.26.0",
@@ -32,10 +35,19 @@
         "eslint": "^8.16.0",
         "eslint-config-prettier": "^8.5.0",
         "eslint-plugin-vue": "^9.0.1",
+        "husky": "^8.0.1",
+        "lint-staged": "^12.4.2",
         "prettier": "^2.6.2",
         "typescript": "^4.7.2",
         "vite-plugin-eslint": "^1.6.1",
         "vue-eslint-parser": "^9.0.2",
         "vue-tsc": "^0.34.16"
+    },
+    "lint-staged": {
+        "resources/js/**/*.{js,ts,vue}": [
+            "prettier --write",
+            "eslint --cache --fix"
+        ],
+        "*.php": "./vendor/bin/php-cs-fixer fix --config=.php-cs-fixer.php -v"
     }
 }
