@@ -19,6 +19,7 @@
         "tightenco/ziggy": "^1.0"
     },
     "require-dev": {
+        "dinhdjj/laravel-typescript-transformer-extended": "^1.0",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.8",
         "laravel/sail": "^1.0.1",
@@ -27,7 +28,8 @@
         "nunomaduro/larastan": "^2.1",
         "pestphp/pest-plugin-laravel": "^1.2",
         "phpunit/phpunit": "^9.5.10",
-        "spatie/laravel-ignition": "^1.0"
+        "spatie/laravel-ignition": "^1.0",
+        "spatie/laravel-typescript-transformer": "^2.1"
     },
     "autoload": {
         "psr-4": {
