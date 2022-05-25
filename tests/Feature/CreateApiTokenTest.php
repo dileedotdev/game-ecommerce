@@ -11,10 +11,10 @@ class CreateApiTokenTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function test_api_tokens_can_be_created()
+    public function testApiTokensCanBeCreated()
     {
-        if (! Features::hasApiFeatures()) {
-            return $this->markTestSkipped('API support is not enabled.');
+        if (!Features::hasApiFeatures()) {
+            return static::markTestSkipped('API support is not enabled.');
         }
 
         $this->actingAs($user = User::factory()->withPersonalTeam()->create());
@@ -27,9 +27,9 @@ class CreateApiTokenTest extends TestCase
             ],
         ]);
 
-        $this->assertCount(1, $user->fresh()->tokens);
-        $this->assertEquals('Test Token', $user->fresh()->tokens->first()->name);
-        $this->assertTrue($user->fresh()->tokens->first()->can('read'));
-        $this->assertFalse($user->fresh()->tokens->first()->can('delete'));
+        static::assertCount(1, $user->fresh()->tokens);
+        static::assertSame('Test Token', $user->fresh()->tokens->first()->name);
+        static::assertTrue($user->fresh()->tokens->first()->can('read'));
+        static::assertFalse($user->fresh()->tokens->first()->can('delete'));
     }
 }
