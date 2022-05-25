@@ -1,11 +1,11 @@
-import "./bootstrap";
+import './bootstrap';
 
-import { createApp, h } from "vue";
-import { createInertiaApp, Link } from "@inertiajs/inertia-vue3";
-import { InertiaProgress } from "@inertiajs/progress";
-import route from "ziggy-js";
+import { createApp, h } from 'vue';
+import { createInertiaApp, Link } from '@inertiajs/inertia-vue3';
+import { InertiaProgress } from '@inertiajs/progress';
+import route from 'ziggy-js';
 
-import { importPageComponent } from "./Vite/import-page-component";
+import { importPageComponent } from './Vite/import-page-component';
 
 createInertiaApp({
     title: (title) => `${title} - ${import.meta.env.VITE_APP_NAME}`,
@@ -17,10 +17,10 @@ createInertiaApp({
 
         createdApp.config.globalProperties.$route = route;
         createdApp.config.globalProperties.route = route; // Used by jetstream components
-        createdApp.component("InertiaLink", Link);
+        createdApp.component('InertiaLink', Link);
 
         createdApp.mount(el);
     },
 });
 
-InertiaProgress.init({ color: "#4B5563" });
+InertiaProgress.init({ color: '#4B5563' });

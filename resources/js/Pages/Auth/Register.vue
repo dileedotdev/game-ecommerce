@@ -71,7 +71,10 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <JetLabel for="password_confirmation" value="Confirm Password" />
+                <JetLabel
+                    for="password_confirmation"
+                    value="Confirm Password"
+                />
                 <JetInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -82,24 +85,51 @@ const submit = () => {
                 />
             </div>
 
-            <div v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature" class="mt-4">
+            <div
+                v-if="$page.props.jetstream.hasTermsAndPrivacyPolicyFeature"
+                class="mt-4"
+            >
                 <JetLabel for="terms">
                     <div class="flex items-center">
-                        <JetCheckbox id="terms" v-model:checked="form.terms" name="terms" />
+                        <JetCheckbox
+                            id="terms"
+                            v-model:checked="form.terms"
+                            name="terms"
+                        />
 
                         <div class="ml-2">
-                            I agree to the <a target="_blank" :href="route('terms.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Terms of Service</a> and <a target="_blank" :href="route('policy.show')" class="underline text-sm text-gray-600 hover:text-gray-900">Privacy Policy</a>
+                            I agree to the
+                            <a
+                                target="_blank"
+                                :href="route('terms.show')"
+                                class="text-sm text-gray-600 underline hover:text-gray-900"
+                                >Terms of Service</a
+                            >
+                            and
+                            <a
+                                target="_blank"
+                                :href="route('policy.show')"
+                                class="text-sm text-gray-600 underline hover:text-gray-900"
+                                >Privacy Policy</a
+                            >
                         </div>
                     </div>
                 </JetLabel>
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <Link :href="route('login')" class="underline text-sm text-gray-600 hover:text-gray-900">
+            <div class="mt-4 flex items-center justify-end">
+                <Link
+                    :href="route('login')"
+                    class="text-sm text-gray-600 underline hover:text-gray-900"
+                >
                     Already registered?
                 </Link>
 
-                <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+                <JetButton
+                    class="ml-4"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
                     Register
                 </JetButton>
             </div>

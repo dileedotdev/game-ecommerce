@@ -62,7 +62,10 @@ const submit = () => {
             </div>
 
             <div class="mt-4">
-                <JetLabel for="password_confirmation" value="Confirm Password" />
+                <JetLabel
+                    for="password_confirmation"
+                    value="Confirm Password"
+                />
                 <JetInput
                     id="password_confirmation"
                     v-model="form.password_confirmation"
@@ -73,8 +76,11 @@ const submit = () => {
                 />
             </div>
 
-            <div class="flex items-center justify-end mt-4">
-                <JetButton :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="mt-4 flex items-center justify-end">
+                <JetButton
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
                     Reset Password
                 </JetButton>
             </div>

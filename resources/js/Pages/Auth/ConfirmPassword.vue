@@ -34,7 +34,8 @@ const submit = () => {
         </template>
 
         <div class="mb-4 text-sm text-gray-600">
-            This is a secure area of the application. Please confirm your password before continuing.
+            This is a secure area of the application. Please confirm your
+            password before continuing.
         </div>
 
         <JetValidationErrors class="mb-4" />
@@ -54,8 +55,12 @@ const submit = () => {
                 />
             </div>
 
-            <div class="flex justify-end mt-4">
-                <JetButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
+            <div class="mt-4 flex justify-end">
+                <JetButton
+                    class="ml-4"
+                    :class="{ 'opacity-25': form.processing }"
+                    :disabled="form.processing"
+                >
                     Confirm
                 </JetButton>
             </div>
