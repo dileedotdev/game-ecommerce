@@ -3,8 +3,16 @@ includes:
 
 parameters:
 
+    ignoreErrors:
+        - '#PHPDoc tag @mixin contains unknown class Eloquent.#'
+
+    reportUnmatchedIgnoredErrors: false
+
     paths:
         - app
+
+    excludePaths:
+        - app/Filament
 
     level: 6
 
