@@ -9,6 +9,7 @@
             "Http/Middleware",
             "Http/Kernel.php",
             "Nova",
+            "Filament",
             "Providers"
         ]
     },
