@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Filament\Facades\Filament;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\ServiceProvider;
 
@@ -20,5 +21,12 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         Model::preventLazyLoading(!app()->isProduction());
+
+        Filament::serving(function (): void {
+            Filament::registerNavigationGroups([
+                'Role',
+                'Permission',
+            ]);
+        });
     }
 }
