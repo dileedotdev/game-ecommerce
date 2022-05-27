@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
@@ -14,22 +15,28 @@ use Spatie\Permission\Traits\HasRoles;
 /**
  * App\Models\User.
  *
- * @typescript
- *
  * @property int                                                                                                       $id
  * @property string                                                                                                    $name
  * @property string                                                                                                    $login
  * @property string                                                                                                    $email
  * @property \Illuminate\Support\Carbon|null                                                                           $email_verified_at
  * @property string                                                                                                    $password
+ * @property string|null                                                                                               $two_factor_secret
+ * @property string|null                                                                                               $two_factor_recovery_codes
+ * @property string|null                                                                                               $two_factor_confirmed_at
  * @property string|null                                                                                               $remember_token
  * @property int|null                                                                                                  $current_team_id
  * @property string|null                                                                                               $profile_photo_path
  * @property \Illuminate\Support\Carbon|null                                                                           $created_at
  * @property \Illuminate\Support\Carbon|null                                                                           $updated_at
- * @property string|null                                                                                               $two_factor_secret
- * @property string|null                                                                                               $two_factor_recovery_codes
- * @property string|null                                                                                               $two_factor_confirmed_at
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Account[]                                            $boughtAccounts
+ * @property int|null                                                                                                  $bought_accounts_count
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\AccountType[]                                        $createdAccountTypes
+ * @property int|null                                                                                                  $created_account_types_count
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Account[]                                            $createdAccounts
+ * @property int|null                                                                                                  $created_accounts_count
+ * @property \Illuminate\Database\Eloquent\Collection|\App\Models\Game[]                                               $createdGames
+ * @property int|null                                                                                                  $created_games_count
  * @property string                                                                                                    $profile_photo_url
  * @property \Illuminate\Notifications\DatabaseNotificationCollection|\Illuminate\Notifications\DatabaseNotification[] $notifications
  * @property int|null                                                                                                  $notifications_count
@@ -92,6 +99,26 @@ class User extends Authenticatable implements FilamentUser
     protected $appends = [
         'profile_photo_url',
     ];
+
+    public function createdGames(): HasMany
+    {
+        return $this->hasMany(Game::class, 'creator_id');
+    }
+
+    public function createdAccountTypes(): HasMany
+    {
+        return $this->hasMany(AccountType::class, 'creator_id');
+    }
+
+    public function createdAccounts(): HasMany
+    {
+        return $this->hasMany(Account::class, 'creator_id');
+    }
+
+    public function boughtAccounts(): HasMany
+    {
+        return $this->hasMany(Account::class, 'buyer_id');
+    }
 
     public function canAccessFilament(): bool
     {
