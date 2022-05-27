@@ -41,6 +41,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereBuyerId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatorId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereConfirmedAt($value)
  */
 class Account extends Model
 {
