@@ -12,7 +12,8 @@ use Filament\Resources\Table;
 use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
-use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class RoleResource extends Resource
 {
@@ -22,6 +23,21 @@ class RoleResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
+    protected static ?string $recordTitleAttribute = 'name';
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'guard_name', 'description'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'guard' => $record->guard_name,
+            'description' => $record->description,
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
@@ -29,14 +45,17 @@ class RoleResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->minLength(6)
-                    ->maxLength(125),
+                    ->maxLength(125)
+                    ->searchable(),
                 TextInput::make('guard_name')
                     ->required()
                     ->default(config('auth.defaults.guard'))
-                    ->maxLength(125),
+                    ->maxLength(125)
+                    ->searchable(),
                 TextInput::make('description')
                     ->nullable()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->searchable(),
             ])
         ;
     }

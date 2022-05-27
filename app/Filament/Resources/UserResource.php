@@ -14,6 +14,7 @@ use Filament\Resources\Table;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class UserResource extends Resource
 {
@@ -23,20 +24,43 @@ class UserResource extends Resource
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
+    protected static ?string $recordTitleAttribute = 'login';
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return '@'.$record->login;
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'login', 'email'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'name' => $record->name,
+            'email' => $record->email,
+        ];
+    }
+
     public static function form(Form $form): Form
     {
         return $form
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->searchable(),
                 TextInput::make('login')
                     ->required()
-                    ->maxLength(125),
+                    ->maxLength(125)
+                    ->searchable(),
                 TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->searchable(),
                 TextInput::make('password')
                     ->password()
                     ->required()

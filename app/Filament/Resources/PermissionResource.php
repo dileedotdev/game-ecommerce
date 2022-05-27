@@ -13,6 +13,7 @@ use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 
 class PermissionResource extends Resource
 {
@@ -21,6 +22,26 @@ class PermissionResource extends Resource
     protected static ?string $navigationGroup = 'Authentication';
 
     protected static ?string $navigationIcon = 'heroicon-o-shield-check';
+
+    protected static ?string $recordTitleAttribute = 'login';
+
+    public static function getGlobalSearchResultTitle(Model $record): string
+    {
+        return $record->name;
+    }
+
+    public static function getGloballySearchableAttributes(): array
+    {
+        return ['name', 'guard_name', 'description'];
+    }
+
+    public static function getGlobalSearchResultDetails(Model $record): array
+    {
+        return [
+            'guard' => $record->guard_name,
+            'description' => $record->description,
+        ];
+    }
 
     public static function form(Form $form): Form
     {
@@ -44,10 +65,10 @@ class PermissionResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('guard_name'),
+                TextColumn::make('name')->searchable(),
+                TextColumn::make('guard_name')->searchable(),
                 BooleanColumn::make('is_build_in')->label('Build In'),
-                TextColumn::make('description')->limit(),
+                TextColumn::make('description')->limit()->searchable(),
                 TextColumn::make('updated_at')
                     ->dateTime(),
             ])
