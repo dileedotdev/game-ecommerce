@@ -44,6 +44,8 @@ class AccountType extends Model
     protected $fillable = [
         'name',
         'description',
+        'game_id',
+        'creator_id',
     ];
 
     protected $hidden = [
