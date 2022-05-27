@@ -28,7 +28,6 @@ class CreatePermissionTables extends Migration
             $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->string('description')->nullable(); // Describe functionality of permission
-            $table->boolean('is_build_in')->default(false); // Is this permission build in?
             $table->timestamps();
 
             $table->unique(['name', 'guard_name']);
@@ -43,7 +42,6 @@ class CreatePermissionTables extends Migration
             $table->string('name', 125);       // For MySQL 8.0 use string('name', 125);
             $table->string('guard_name', 125); // For MySQL 8.0 use string('guard_name', 125);
             $table->string('description')->nullable(); // Describe functionality of role
-            $table->boolean('is_build_in')->default(false); // Is this roles build in?
             $table->timestamps();
             if ($teams || config('permission.testing')) {
                 $table->unique([$columnNames['team_foreign_key'], 'name', 'guard_name']);

@@ -22,16 +22,12 @@ class PermissionPolicy
 
     public function create(User $user): bool
     {
-        return $user->hasPermissionTo('permissions.create');
+        return false;
     }
 
     public function update(User $user, Permission $permission): bool
     {
-        if ($permission->is_build_in) {
-            return false;
-        }
-
-        return $user->hasPermissionTo("permissions.update.{$permission->getKey()}");
+        return false;
     }
 
     public function deleteAny(): bool
@@ -41,10 +37,6 @@ class PermissionPolicy
 
     public function delete(User $user, Permission $permission): bool
     {
-        if ($permission->is_build_in) {
-            return false;
-        }
-
-        return $user->hasPermissionTo("permissions.delete.{$permission->getKey()}");
+        return false;
     }
 }

@@ -9,17 +9,14 @@ use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
-use Filament\Tables\Columns\BooleanColumn;
 use Filament\Tables\Columns\TextColumn;
-use Filament\Tables\Filters\Filter;
-use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
 
-    protected static ?string $navigationGroup = 'Authentication';
+    protected static ?string $navigationGroup = 'System';
 
     protected static ?string $navigationIcon = 'heroicon-o-user-group';
 
@@ -45,17 +42,14 @@ class RoleResource extends Resource
                 TextInput::make('name')
                     ->required()
                     ->minLength(6)
-                    ->maxLength(125)
-                    ->searchable(),
+                    ->maxLength(125),
                 TextInput::make('guard_name')
                     ->required()
                     ->default(config('auth.defaults.guard'))
-                    ->maxLength(125)
-                    ->searchable(),
+                    ->maxLength(125),
                 TextInput::make('description')
                     ->nullable()
-                    ->maxLength(255)
-                    ->searchable(),
+                    ->maxLength(255),
             ])
         ;
     }
@@ -64,17 +58,17 @@ class RoleResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('guard_name'),
-                BooleanColumn::make('is_build_in')->label('Build In'),
-                TextColumn::make('description')->limit(),
+                TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('guard_name')
+                    ->searchable(),
+                TextColumn::make('description')
+                    ->limit()
+                    ->searchable(),
                 TextColumn::make('updated_at')
                     ->dateTime(),
             ])
             ->filters([
-                Filter::make('Build In')
-                    ->toggle()
-                    ->query(fn (Builder $query): Builder => $query->where('is_build_in', true)),
             ])
         ;
     }

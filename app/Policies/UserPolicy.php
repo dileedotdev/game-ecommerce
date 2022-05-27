@@ -29,9 +29,9 @@ class UserPolicy
         return $user->hasPermissionTo("users.update.{$model->getKey()}");
     }
 
-    public function deleteAny(): bool
+    public function deleteAny(User $user): bool
     {
-        return false;
+        return $user->hasPermissionTo('users.delete');
     }
 
     public function delete(User $user, user $model): bool

@@ -20,7 +20,7 @@ class UserResource extends Resource
 {
     protected static ?string $model = User::class;
 
-    protected static ?string $navigationGroup = 'Authentication';
+    protected static ?string $navigationGroup = 'System';
 
     protected static ?string $navigationIcon = 'heroicon-o-user';
 
@@ -50,17 +50,14 @@ class UserResource extends Resource
             ->schema([
                 TextInput::make('name')
                     ->required()
-                    ->maxLength(255)
-                    ->searchable(),
+                    ->maxLength(255),
                 TextInput::make('login')
                     ->required()
-                    ->maxLength(125)
-                    ->searchable(),
+                    ->maxLength(125),
                 TextInput::make('email')
                     ->email()
                     ->required()
-                    ->maxLength(255)
-                    ->searchable(),
+                    ->maxLength(255),
                 TextInput::make('password')
                     ->password()
                     ->required()
@@ -76,9 +73,12 @@ class UserResource extends Resource
     {
         return $table
             ->columns([
-                TextColumn::make('name'),
-                TextColumn::make('login'),
-                TextColumn::make('email'),
+                TextColumn::make('name')
+                    ->searchable(),
+                TextColumn::make('login')
+                    ->searchable(),
+                TextColumn::make('email')
+                    ->searchable(),
                 TextColumn::make('email_verified_at')
                     ->dateTime(),
                 TextColumn::make('updated_at')

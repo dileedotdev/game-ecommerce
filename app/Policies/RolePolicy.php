@@ -27,24 +27,16 @@ class RolePolicy
 
     public function update(User $user, Role $role): bool
     {
-        if ($role->is_build_in) {
-            return false;
-        }
-
         return $user->hasPermissionTo("roles.update.{$role->getKey()}");
     }
 
-    public function deleteAny(): bool
+    public function deleteAny(User $user): bool
     {
-        return false;
+        return $user->hasPermissionTo('roles.delete');
     }
 
     public function delete(User $user, Role $role): bool
     {
-        if ($role->is_build_in) {
-            return false;
-        }
-
         return $user->hasPermissionTo("roles.delete.{$role->getKey()}");
     }
 }

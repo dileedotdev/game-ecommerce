@@ -11,7 +11,6 @@ use Spatie\Permission\Models\Permission as Model;
  * @property string                                                      $name
  * @property string                                                      $guard_name
  * @property string|null                                                 $description
- * @property int                                                         $is_build_in
  * @property \Illuminate\Support\Carbon|null                             $created_at
  * @property \Illuminate\Support\Carbon|null                             $updated_at
  * @property \Illuminate\Database\Eloquent\Collection|Permission[]       $permissions
