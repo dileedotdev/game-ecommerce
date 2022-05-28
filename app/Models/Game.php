@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Actions\Permission\Create;
+use App\Actions\Permission\Delete;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -58,19 +60,16 @@ class Game extends Model
     {
         static::created(function (self $account): void {
             $key = $account->getKey();
-
-            $account->creator->givePermissionTo(
-                Permission::create(['name' => "games.view.{$key}", 'description' => "Can view games:{$key} (include important infos)"]),
-                Permission::create(['name' => "games.update.{$key}", 'description' => "Can update games:{$key}"]),
-                Permission::create(['name' => "games.delete.{$key}", 'description' => "Can delete games:{$key}"]),
-            );
+            Create::run("games.view.{$key}", $account->creator, "Can view games:{$key} (include important infos)");
+            Create::run("games.update.{$key}", $account->creator, "Can update games:{$key}");
+            Create::run("games.delete.{$key}", $account->creator, "Can delete games:{$key}");
         });
 
         static::deleted(function (self $account): void {
             $key = $account->getKey();
-            Permission::findByName("games.view.{$key}")->delete(); /** @phpstan-ignore-line */
-            Permission::findByName("games.update.{$key}")->delete(); /** @phpstan-ignore-line */
-            Permission::findByName("games.delete.{$key}")->delete(); /** @phpstan-ignore-line */
+            Delete::run("games.view.{$key}");
+            Delete::run("games.update.{$key}");
+            Delete::run("games.delete.{$key}");
         });
     }
 

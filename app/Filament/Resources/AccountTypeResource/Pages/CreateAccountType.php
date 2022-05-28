@@ -18,7 +18,7 @@ class CreateAccountType extends CreateRecord
 
         dd($data['usable_user_ids']);
         if ($data['usable_user_ids']) {
-            User::whereIn('id', $data['usable_user_ids'])->each->attachPermissionTo('accounts.create.'.$type->getKey());
+            User::whereIn('id', $data['usable_user_ids'])->each->attachPermissionTo('account_types.add_accounts.'.$type->getKey());
         }
 
         return $type;

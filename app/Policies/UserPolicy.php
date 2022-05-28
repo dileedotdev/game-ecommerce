@@ -11,7 +11,7 @@ class UserPolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('users.view');
+        return $user->hasPermissionTo('users.view.*');
     }
 
     public function view(User $user, User $model): bool
@@ -31,7 +31,7 @@ class UserPolicy
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('users.delete');
+        return $user->hasPermissionTo('users.delete.*');
     }
 
     public function delete(User $user, user $model): bool

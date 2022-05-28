@@ -13,6 +13,7 @@ return new class() extends Migration {
         $role->givePermissionTo(
             Permission::create(['name' => 'account_types.view.*', 'description' => 'Can view any account types (include important infos)']),
             Permission::create(['name' => 'account_types.create.*', 'description' => 'Can create account types']),
+            Permission::create(['name' => 'account_types.add_accounts.*', 'description' => 'Can use any account types to create accounts']),
             Permission::create(['name' => 'account_types.update.*', 'description' => 'Can update any account types and any related accounts']),
             Permission::create(['name' => 'account_types.delete.*', 'description' => 'Can delete any account types']),
         );

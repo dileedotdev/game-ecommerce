@@ -13,7 +13,7 @@ class EditAccountType extends EditRecord
 
     protected function mutateFormDataBeforeFill(array $data): array
     {
-        $data['usable_user_logins'] = User::permission('accounts.create.'.$this->record->getKey())
+        $data['usable_user_logins'] = User::permission('account_types.add_accounts.'.$this->record->getKey())
             ->get()
             ->pluck('login')
             ->toArray()
@@ -26,17 +26,17 @@ class EditAccountType extends EditRecord
     {
         $record->update($data);
 
-        User::permission('accounts.create.'.$record->getKey())
+        User::permission('account_types.add_accounts.'.$record->getKey())
             ->get()
             ->each
-            ->revokePermissionTo('accounts.create.'.$record->getKey())
+            ->revokePermissionTo('account_types.add_accounts.'.$record->getKey())
         ;
 
         if ($data['usable_user_logins']) {
             User::whereIn('login', $data['usable_user_logins'])
                 ->get()
                 ->each
-                ->givePermissionTo('accounts.create.'.$record->getKey())
+                ->givePermissionTo('account_types.add_accounts.'.$record->getKey())
             ;
         }
 

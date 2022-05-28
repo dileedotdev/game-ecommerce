@@ -25,6 +25,11 @@ class AccountTypePolicy
         return $user->hasPermissionTo('account_types.create');
     }
 
+    public function addAccount(User $user, AccountType $accountType): bool
+    {
+        return $user->hasPermissionTo('account_types.add_accounts.'.$accountType->getKey());
+    }
+
     public function update(User $user, AccountType $accountType): bool
     {
         return $user->hasPermissionTo('account_types.update.'.$accountType->getKey());

@@ -15,7 +15,6 @@ return new class() extends Migration {
 
         $role->givePermissionTo(
             Permission::create(['name' => 'accounts.view.*', 'description' => 'Can view any accounts (include important infos)']),
-            Permission::create(['name' => 'accounts.create.*', 'description' => 'Can use any account types to create accounts']),
             Permission::create(['name' => 'accounts.update.*', 'description' => 'Can update any accounts']),
             Permission::create(['name' => 'accounts.delete.*', 'description' => 'Can delete any accounts']),
         );

@@ -32,9 +32,9 @@ it('allow view if user has accounts.view.{key} permission', function (): void {
     expect($this->policy->view($this->user, $this->account))->toBe(true);
 });
 
-it('allow create if user has accounts.create.{account_type_key} permission', function (): void {
+it('allow create if user has account_types.add_accounts.{account_type_key} permission', function (): void {
     $accountType = AccountType::factory()->create();
-    $permissions = Permission::findOrCreate('accounts.create.'.$accountType->getKey());
+    $permissions = Permission::findOrCreate('account_types.add_accounts.'.$accountType->getKey());
 
     expect($this->policy->create($this->user, $accountType))->toBe(false);
 

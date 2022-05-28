@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Actions\Permission\Create;
+use App\Actions\Permission\Delete;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -59,21 +61,20 @@ class AccountType extends Model
 
     protected static function booted(): void
     {
-        static::created(function (self $account): void {
-            $key = $account->getKey();
-
-            $account->creator->givePermissionTo(
-                Permission::create(['name' => "account_types.view.{$key}", 'description' => "Can view account_types:{$key} (include important infos)"]),
-                Permission::create(['name' => "account_types.update.{$key}", 'description' => "Can update account_types:{$key} and any related accounts"]),
-                Permission::create(['name' => "account_types.delete.{$key}", 'description' => "Can delete account_types:{$key}"]),
-            );
+        static::created(function (self $type): void {
+            $key = $type->getKey();
+            Create::run("account_types.view.{$key}", $type->creator, "Can view account_types:{$key} (include important infos)");
+            Create::run("account_types.add_accounts.{$key}", $type->creator, "Can use account_types:{$key} to create accounts");
+            Create::run("account_types.update.{$key}", $type->creator, "Can update account_types:{$key}");
+            Create::run("account_types.delete.{$key}", $type->creator, "Can delete account_types:{$key}");
         });
 
         static::deleted(function (self $account): void {
             $key = $account->getKey();
-            Permission::findByName("account_types.view.{$key}")->delete(); /** @phpstan-ignore-line */
-            Permission::findByName("account_types.update.{$key}")->delete(); /** @phpstan-ignore-line */
-            Permission::findByName("account_types.delete.{$key}")->delete(); /** @phpstan-ignore-line */
+            Delete::run("account_types.view.{$key}");
+            Delete::run("account_types.add_accounts.{$key}");
+            Delete::run("account_types.update.{$key}");
+            Delete::run("account_types.delete.{$key}");
         });
     }
 

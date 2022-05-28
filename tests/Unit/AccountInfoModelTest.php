@@ -143,7 +143,7 @@ it('does not allow delete any at all', function (): void {
 
     $this->user->givePermissionTo('accounts.update.*');
     $this->user->givePermissionTo('accounts.delete.*');
-    $this->user->givePermissionTo('accounts.create.*');
+    $this->user->givePermissionTo('account_types.add_accounts.*');
     $this->user->givePermissionTo('accounts.view.*');
 
     expect($this->policy->deleteAny($this->user))->toBe(false);

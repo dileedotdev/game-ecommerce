@@ -23,7 +23,7 @@ class AccountPolicy
 
     public function create(User $user, AccountType $accountType): bool
     {
-        return $user->hasPermissionTo('accounts.create.'.$accountType->getKey());
+        return $user->can('addAccount', $accountType);
     }
 
     public function update(User $user, Account $account): bool

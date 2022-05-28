@@ -12,7 +12,7 @@ return new class() extends Migration {
 
         $role->givePermissionTo(
             Permission::create(['name' => 'games.view.*', 'description' => 'Can view any games (include important infos)']),
-            Permission::create(['name' => 'games.create.*', 'description' => 'Can create games']),
+            Permission::create(['name' => 'games.create', 'description' => 'Can create games']),
             Permission::create(['name' => 'games.update.*', 'description' => 'Can update any games']),
             Permission::create(['name' => 'games.delete.*', 'description' => 'Can delete any games']),
         );

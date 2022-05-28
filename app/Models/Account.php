@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Actions\Permission\Create;
+use App\Actions\Permission\Delete;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -68,19 +70,16 @@ class Account extends Model
     {
         static::created(function (self $account): void {
             $key = $account->getKey();
-
-            $account->creator->givePermissionTo(
-                Permission::create(['name' => "accounts.view.{$key}", 'description' => "Can view accounts:{$key} (include important infos)"]),
-                Permission::create(['name' => "accounts.update.{$key}", 'description' => "Can update accounts:{$key}"]),
-                Permission::create(['name' => "accounts.delete.{$key}", 'description' => "Can delete accounts:{$key}"]),
-            );
+            Create::run("accounts.view.{$key}", $account->creator, "Can view accounts:{$key} (include important infos)");
+            Create::run("accounts.update.{$key}", $account->creator, "Can update accounts:{$key}");
+            Create::run("accounts.delete.{$key}", $account->creator, "Can delete accounts:{$key}");
         });
 
         static::deleted(function (self $account): void {
             $key = $account->getKey();
-            Permission::findByName("accounts.view.{$key}")->delete(); /** @phpstan-ignore-line */
-            Permission::findByName("accounts.update.{$key}")->delete(); /** @phpstan-ignore-line */
-            Permission::findByName("accounts.delete.{$key}")->delete(); /** @phpstan-ignore-line */
+            Delete::run("accounts.view.{$key}");
+            Delete::run("accounts.update.{$key}");
+            Delete::run("accounts.delete.{$key}");
         });
     }
 

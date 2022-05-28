@@ -12,7 +12,7 @@ class RolePolicy
 
     public function viewAny(User $user): bool
     {
-        return $user->hasPermissionTo('roles.view');
+        return $user->hasPermissionTo('roles.view.*');
     }
 
     public function view(User $user, Role $role): bool
@@ -32,7 +32,7 @@ class RolePolicy
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('roles.delete');
+        return $user->hasPermissionTo('roles.delete.*');
     }
 
     public function delete(User $user, Role $role): bool
