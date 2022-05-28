@@ -60,6 +60,13 @@ class AccountField extends Model
         'description',
         'is_required',
         'regex',
+        'can_create_by_creator',
+        'can_update_by_creator',
+        'can_delete_by_creator',
+        'can_view_by_anyone',
+        'can_view_by_creator',
+        'can_view_by_unconfirmed_buyer',
+        'can_view_by_confirmed_buyer',
     ];
 
     protected $hidden = [

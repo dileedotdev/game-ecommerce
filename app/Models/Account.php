@@ -12,44 +12,44 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  * App\Models\Account.
  *
  * @property int                                                                 $id
- * @property int                                                                 $account_type_id
  * @property string|null                                                         $description
  * @property \Illuminate\Support\Carbon|null                                     $confirmed_at
  * @property \Illuminate\Support\Carbon|null                                     $created_at
  * @property \Illuminate\Support\Carbon|null                                     $updated_at
+ * @property int                                                                 $account_type_id
+ * @property int                                                                 $creator_id
+ * @property int|null                                                            $buyer_id
+ * @property \App\Models\User|null                                               $buyer
+ * @property \App\Models\User                                                    $creator
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\AccountField[] $fields
  * @property int|null                                                            $fields_count
  * @property \Illuminate\Database\Eloquent\Collection|\App\Models\AccountInfo[]  $infos
  * @property int|null                                                            $infos_count
- * @property \App\Models\AccountType|null                                        $type
+ * @property \App\Models\AccountType                                             $type
  *
  * @method static \Database\Factories\AccountFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|Account newModelQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Account newQuery()
  * @method static \Illuminate\Database\Eloquent\Builder|Account query()
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereAccountTypeId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereBuyerId($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereConfirmedAt($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
+ * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatorId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereDescription($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
  * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
  * @mixin \Eloquent
- *
- * @property \App\Models\User|null $buyer
- * @property \App\Models\User|null $creator
- * @property int                   $creator_id
- * @property int|null              $buyer_id
- *
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereBuyerId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatorId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereConfirmedAt($value)
  */
 class Account extends Model
 {
     use HasFactory;
 
     protected $fillable = [
+        'account_type_id',
         'description',
         'confirmed_at',
+        'creator_id',
     ];
 
     protected $hidden = [

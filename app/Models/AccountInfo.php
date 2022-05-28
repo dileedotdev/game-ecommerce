@@ -16,7 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
  * @property \App\Models\Account             $account
- * @property \App\Models\AccountField|null   $field
+ * @property \App\Models\AccountField        $field
+ * @property string                          $masked_value
  *
  * @method static \Database\Factories\AccountInfoFactory factory(...$parameters)
  * @method static \Illuminate\Database\Eloquent\Builder|AccountInfo newModelQuery()
@@ -36,6 +37,7 @@ class AccountInfo extends Model
 
     protected $fillable = [
         'value',
+        'account_field_id',
     ];
 
     protected $hidden = [
@@ -56,5 +58,22 @@ class AccountInfo extends Model
     public function field(): BelongsTo
     {
         return $this->belongsTo(AccountField::class, 'account_field_id');
+    }
+
+    public function getMaskedValueAttribute(): string
+    {
+        if ($this->field->can_view_by_anyone) {
+            return $this->value;
+        }
+
+        if (!auth()->check()) {
+            return '******';
+        }
+
+        if (auth()->user()->can('view', $this)) {
+            return $this->value;
+        }
+
+        return '******';
     }
 }
