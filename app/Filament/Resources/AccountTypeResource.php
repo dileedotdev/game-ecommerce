@@ -5,8 +5,10 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\AccountTypeResource\Pages;
 use App\Filament\Resources\AccountTypeResource\RelationManagers;
 use App\Models\AccountType;
+use App\Models\User;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\BelongsToSelect;
+use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -60,6 +62,9 @@ class AccountTypeResource extends Resource
                     ->maxLength(125),
                 TextInput::make('description')
                     ->maxLength(255),
+                MultiSelect::make('usable_user_logins')
+                    ->searchable()
+                    ->getSearchResultsUsing(fn (string $searchQuery) => User::where('login', 'like', "%{$searchQuery}%")->limit(50)->pluck('login', 'login')),
             ])
         ;
     }
