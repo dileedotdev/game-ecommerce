@@ -10,7 +10,7 @@ class Create
 {
     use AsAction;
 
-    public function handle(string $name, string $publisherName, User $creator, ?string $description = null): Game
+    public function handle(User $creator, string $name, string $publisherName, ?string $description = null): Game
     {
         return Game::forceCreate([
             'name' => $name,

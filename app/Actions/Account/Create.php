@@ -6,7 +6,6 @@ use App\Models\Account;
 use App\Models\AccountField;
 use App\Models\AccountType;
 use App\Models\User;
-use DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class Create
@@ -22,23 +21,17 @@ class Create
         ?string $description = null,
         array $infos = []
     ): Account {
-        DB::beginTransaction();
-        try {
-            $account = Account::forceCreate([
-                'account_type_id' => $accountType->id,
-                'description' => $description,
-                'creator_id' => $creator->id,
-            ]);
+        $account = Account::forceCreate([
+            'account_type_id' => $accountType->id,
+            'description' => $description,
+            'creator_id' => $creator->id,
+        ]);
 
-            $fields = AccountField::whereIn('id', array_reverse($infos))->get();
-            foreach ($infos as $key => $value) {
-                CreateInfo::run($account, $fields->where('id', $key)->first(), $value);
+        if ($infos) {
+            $fields = AccountField::whereIn('id', array_flip($infos))->get();
+            foreach ($fields as $field) {
+                CreateInfo::run($account, $field, $infos[$field->getKey()]);
             }
-
-            DB::commit();
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
         }
 
         return $account;
