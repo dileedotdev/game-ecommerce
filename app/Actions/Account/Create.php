@@ -24,7 +24,8 @@ class Create
     ): Account {
         DB::beginTransaction();
         try {
-            $account = $accountType->accounts()->forceCreate([
+            $account = Account::forceCreate([
+                'account_type_id' => $accountType->id,
                 'description' => $description,
                 'creator_id' => $creator->id,
             ]);

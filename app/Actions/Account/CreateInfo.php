@@ -16,7 +16,8 @@ class CreateInfo
         AccountField $accountField,
         string $value,
     ): AccountInfo {
-        return $account->infos()->forceCreate([
+        return AccountInfo::forceCreate([
+            'account_id' => $account->id,
             'account_field_id' => $accountField->id,
             'value' => $value,
         ]);
