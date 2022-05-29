@@ -9,6 +9,13 @@ Below introduces & instructs you about the project.
 - **NPM & Composer**
 - **common, curl, json, mbstring, mysql, xml, zip, openssl, mysqldump**
 
+For laravel-media package
+
+```bash
+sudo apt install jpegoptim optipng pngquant gifsicle
+npm install -g svgo
+```
+
 ## Install dependencies
 
 ```bash
