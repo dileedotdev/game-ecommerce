@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\AccountTypeResource\Pages;
 
+use App\Actions\AccountType\GiveAddAccountsPermissionToUser;
+use App\Actions\AccountType\RevokeAddAccountsPermissionInAllUsers;
+use App\Actions\AccountType\Update;
 use App\Filament\Resources\AccountTypeResource;
 use App\Models\User;
 use Filament\Resources\Pages\EditRecord;
@@ -24,20 +27,15 @@ class EditAccountType extends EditRecord
 
     protected function handleRecordUpdate(Model $record, array $data): Model
     {
-        $record->update($data);
+        Update::run($record,
+            name: $data['name'],
+            description: $data['description'],
+        );
 
-        User::permission('account_types.add_accounts.'.$record->getKey())
-            ->get()
-            ->each
-            ->revokePermissionTo('account_types.add_accounts.'.$record->getKey())
-        ;
+        RevokeAddAccountsPermissionInAllUsers::run($record);
 
         if ($data['usable_user_logins']) {
-            User::whereIn('login', $data['usable_user_logins'])
-                ->get()
-                ->each
-                ->givePermissionTo('account_types.add_accounts.'.$record->getKey())
-            ;
+            GiveAddAccountsPermissionToUser::run($record, users: User::whereIn('login', $data['usable_user_logins'])->get());
         }
 
         return $record;

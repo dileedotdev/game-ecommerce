@@ -6,7 +6,6 @@ use App\Filament\Resources\AccountTypeResource\Pages;
 use App\Filament\Resources\AccountTypeResource\RelationManagers;
 use App\Models\AccountType;
 use App\Models\User;
-use Filament\Facades\Filament;
 use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\MultiSelect;
 use Filament\Forms\Components\TextInput;
@@ -50,11 +49,6 @@ class AccountTypeResource extends Resource
             ->schema([
                 BelongsToSelect::make('game_id')
                     ->relationship('game', 'name')
-                    ->searchable()
-                    ->required(),
-                BelongsToSelect::make('creator_id')
-                    ->relationship('creator', 'login')
-                    ->default(Filament::auth()->user()->id)
                     ->searchable()
                     ->required(),
                 TextInput::make('name')

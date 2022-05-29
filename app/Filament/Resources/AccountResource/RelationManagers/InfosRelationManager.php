@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\AccountResource\RelationManagers;
 
+use App\Actions\Account\CreateInfo;
+use App\Actions\Account\DeleteInfo;
+use App\Actions\Account\UpdateInfo;
 use App\Models\AccountField;
 use App\Models\AccountInfo;
 use Filament\Facades\Filament;
@@ -85,5 +88,33 @@ class InfosRelationManager extends HasManyRelationManager
             ->filters([
             ])
         ;
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+        return CreateInfo::run(
+            $this->ownerRecord,
+            AccountField::findOrFail($data['account_field_id']),
+            $data['value'],
+        );
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        UpdateInfo::run(
+            $record,
+            $data['value'],
+        );
+
+        return $record;
+    }
+
+    public function delete(): void
+    {
+        DeleteInfo::run($this->getMountedTableActionRecord());
+
+        if (filled($this->getDeletedNotificationMessage())) {
+            $this->notify('success', $this->getDeletedNotificationMessage());
+        }
     }
 }

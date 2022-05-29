@@ -52,7 +52,7 @@
     },
     "scripts": {
         "analyse": "vendor/bin/phpstan analyse --ansi",
-        "ide-helper": "php artisan ide-helper:generate && php artisan ide-helper:models --write && php artisan ide-helper:meta && php artisan ide-helper:actions",
+        "ide-helper": "php artisan ide-helper:generate && php artisan ide-helper:models --nowrite && php artisan ide-helper:meta && php artisan ide-helper:actions",
         "post-autoload-dump": [
             "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
             "@php artisan package:discover --ansi"

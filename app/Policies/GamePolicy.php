@@ -32,11 +32,15 @@ class GamePolicy
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('games.delete.*');
+        return false;
+        // Should use soft delete in the future
+        // return $user->hasPermissionTo('games.delete.*');
     }
 
     public function delete(User $user, Game $game): bool
     {
-        return $user->hasPermissionTo('games.delete.'.$game->getKey());
+        return false;
+        // Should use soft delete in the future
+        // return $user->hasPermissionTo('games.delete.'.$game->getKey());
     }
 }

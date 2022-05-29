@@ -51,22 +51,22 @@ it('allow update if user has account_types.update.{key} permission', function ()
     expect($this->policy->update($this->user, $this->accountType))->toBe(true);
 });
 
-it('allow delete any if user has account_types.delete.* permission', function (): void {
+it('deny delete any at all', function (): void {
     $permissions = Permission::findOrCreate('account_types.delete.*');
 
     expect($this->policy->deleteAny($this->user))->toBe(false);
 
     $this->user->givePermissionTo($permissions);
 
-    expect($this->policy->deleteAny($this->user))->toBe(true);
+    expect($this->policy->deleteAny($this->user))->toBe(false);
 });
 
-it('allow delete if user has account_types.delete.{key} permission', function (): void {
+it('deny delete at all', function (): void {
     $permissions = Permission::findOrCreate('account_types.delete.'.$this->accountType->getKey());
 
     expect($this->policy->delete($this->user, $this->accountType))->toBe(false);
 
     $this->user->givePermissionTo($permissions);
 
-    expect($this->policy->delete($this->user, $this->accountType))->toBe(true);
+    expect($this->policy->delete($this->user, $this->accountType))->toBe(false);
 });

@@ -2,9 +2,12 @@
 
 namespace App\Filament\Resources\AccountTypeResource\Pages;
 
+use App\Actions\AccountType\Create;
+use App\Actions\AccountType\GiveAddAccountsPermissionToUsers;
 use App\Filament\Resources\AccountTypeResource;
-use App\Models\AccountType;
+use App\Models\Game;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Resources\Pages\CreateRecord;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,11 +17,15 @@ class CreateAccountType extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $type = AccountType::create($data);
+        $type = Create::run(
+            game: Game::findOrFail($data['game_id']),
+            creator: Filament::auth()->user(),
+            name: $data['name'],
+            description: $data['description'],
+        );
 
-        dd($data['usable_user_ids']);
-        if ($data['usable_user_ids']) {
-            User::whereIn('id', $data['usable_user_ids'])->each->attachPermissionTo('account_types.add_accounts.'.$type->getKey());
+        if ($data['usable_user_logins']) {
+            GiveAddAccountsPermissionToUsers::run($type, users: User::whereIn('login', $data['usable_user_logins'])->get());
         }
 
         return $type;

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\AccountResource\Pages;
 
+use App\Actions\Account\Create;
 use App\Filament\Resources\AccountResource;
 use App\Models\Account;
 use App\Models\AccountType;
@@ -66,19 +67,11 @@ class CreateAccount extends CreateRecord
 
     protected function handleRecordCreation(array $data): Model
     {
-        $data['creator_id'] = Filament::auth()->user()->getKey();
-
-        $account = Account::create($data);
-
-        foreach ($data['infos'] as $fieldId => $value) {
-            if ($value) {
-                $account->infos()->create([
-                    'account_field_id' => $fieldId,
-                    'value' => $value,
-                ]);
-            }
-        }
-
-        return $account;
+        return Create::run(
+            accountType: AccountType::findOrFail($data['account_type_id']),
+            creator: Filament::auth()->user(),
+            description: $data['description'],
+            infos: $data['infos'],
+        );
     }
 }

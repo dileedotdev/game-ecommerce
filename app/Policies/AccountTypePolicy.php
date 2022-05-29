@@ -37,11 +37,15 @@ class AccountTypePolicy
 
     public function deleteAny(User $user): bool
     {
-        return $user->hasPermissionTo('account_types.delete.*');
+        return false;
+        // Should use soft delete in the future
+        // return $user->hasPermissionTo('account_types.delete.*');
     }
 
     public function delete(User $user, AccountType $accountType): bool
     {
-        return $user->hasPermissionTo('account_types.delete.'.$accountType->getKey());
+        return false;
+        // Should use soft delete in the future
+        // return $user->hasPermissionTo('account_types.delete.'.$accountType->getKey());
     }
 }

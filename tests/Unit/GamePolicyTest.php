@@ -51,22 +51,22 @@ it('allow update if user has games.update.{key} permission', function (): void {
     expect($this->policy->update($this->user, $this->game))->toBe(true);
 });
 
-it('allow delete any if user has games.delete.* permission', function (): void {
+it('deny delete any at all', function (): void {
     $permissions = Permission::findOrCreate('games.delete.*');
 
     expect($this->policy->deleteAny($this->user))->toBe(false);
 
     $this->user->givePermissionTo($permissions);
 
-    expect($this->policy->deleteAny($this->user))->toBe(true);
+    expect($this->policy->deleteAny($this->user))->toBe(false);
 });
 
-it('allow delete if user has games.delete.{key} permission', function (): void {
+it('deny delete at all', function (): void {
     $permissions = Permission::findOrCreate('games.delete.'.$this->game->getKey());
 
     expect($this->policy->delete($this->user, $this->game))->toBe(false);
 
     $this->user->givePermissionTo($permissions);
 
-    expect($this->policy->delete($this->user, $this->game))->toBe(true);
+    expect($this->policy->delete($this->user, $this->game))->toBe(false);
 });

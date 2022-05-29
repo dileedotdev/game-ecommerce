@@ -5,8 +5,6 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\GameResource\Pages;
 use App\Filament\Resources\GameResource\RelationManagers;
 use App\Models\Game;
-use Filament\Facades\Filament;
-use Filament\Forms\Components\BelongsToSelect;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
@@ -38,11 +36,6 @@ class GameResource extends Resource
     {
         return $form
             ->schema([
-                BelongsToSelect::make('creator_id')
-                    ->relationship('creator', 'login')
-                    ->searchable()
-                    ->default(Filament::auth()->user()->id)
-                    ->required(),
                 TextInput::make('name')
                     ->required()
                     ->maxLength(125),

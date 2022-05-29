@@ -44,7 +44,6 @@ class Game extends Model
         'name',
         'publisher_name',
         'description',
-        'creator_id',
     ];
 
     protected $hidden = [

@@ -2,6 +2,9 @@
 
 namespace App\Filament\Resources\AccountTypeResource\RelationManagers;
 
+use App\Actions\AccountType\CreateField;
+use App\Actions\AccountType\DeleteField;
+use App\Actions\AccountType\UpdateField;
 use App\Models\AccountField;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\TextInput;
@@ -105,5 +108,48 @@ class FieldsRelationManager extends HasManyRelationManager
                     ->query(fn (Builder $builder): Builder => $builder->where('can_view_by_confirmed_buyer', true)),
             ])
         ;
+    }
+
+    protected function handleRecordCreation(array $data): Model
+    {
+        return CreateField::run($this->ownerRecord,
+            name: $data['name'],
+            regex: $data['regex'],
+            isRequired: $data['is_required'],
+            canCreateByCreator: $data['can_create_by_creator'],
+            canUpdateByCreator: $data['can_update_by_creator'],
+            canDeleteByCreator: $data['can_delete_by_creator'],
+            canViewByAnyone: $data['can_view_by_anyone'],
+            canViewByCreator: $data['can_view_by_creator'],
+            canViewByUnconfirmedBuyer: $data['can_view_by_unconfirmed_buyer'],
+            canViewByConfirmedBuyer: $data['can_view_by_confirmed_buyer'],
+        );
+    }
+
+    protected function handleRecordUpdate(Model $record, array $data): Model
+    {
+        UpdateField::run($record,
+            name: $data['name'],
+            regex: $data['regex'],
+            isRequired: $data['is_required'],
+            canCreateByCreator: $data['can_create_by_creator'],
+            canUpdateByCreator: $data['can_update_by_creator'],
+            canDeleteByCreator: $data['can_delete_by_creator'],
+            canViewByAnyone: $data['can_view_by_anyone'],
+            canViewByCreator: $data['can_view_by_creator'],
+            canViewByUnconfirmedBuyer: $data['can_view_by_unconfirmed_buyer'],
+            canViewByConfirmedBuyer: $data['can_view_by_confirmed_buyer'],
+        );
+
+        return $record;
+    }
+
+    public function delete(): void
+    {
+        DeleteField::run($this->getMountedTableActionRecord());
+
+        if (filled($this->getDeletedNotificationMessage())) {
+            $this->notify('success', $this->getDeletedNotificationMessage());
+        }
     }
 }
