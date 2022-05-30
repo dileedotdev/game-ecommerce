@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use Bavix\Wallet\Interfaces\Wallet;
+use Bavix\Wallet\Traits\HasWallet;
 use Filament\Models\Contracts\FilamentUser;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,12 +14,13 @@ use Laravel\Jetstream\HasProfilePhoto;
 use Laravel\Sanctum\HasApiTokens;
 use Spatie\Permission\Traits\HasRoles;
 
-class User extends Authenticatable implements FilamentUser
+class User extends Authenticatable implements FilamentUser, Wallet
 {
     use HasApiTokens;
     use HasFactory;
     use HasProfilePhoto;
     use HasRoles;
+    use HasWallet;
     use Notifiable;
     use TwoFactorAuthenticatable;
 
@@ -43,6 +46,11 @@ class User extends Authenticatable implements FilamentUser
         'profile_photo_url',
     ];
 
+    public function canAccessFilament(): bool
+    {
+        return $this->hasPermissionTo('view.admin-page');
+    }
+
     public function createdGames(): HasMany
     {
         return $this->hasMany(Game::class, 'creator_id');
@@ -63,8 +71,8 @@ class User extends Authenticatable implements FilamentUser
         return $this->hasMany(Account::class, 'buyer_id');
     }
 
-    public function canAccessFilament(): bool
+    public function getFormattedBalanceAttribute(): string
     {
-        return $this->hasPermissionTo('view.admin-page');
+        return number_format($this->balanceInt);
     }
 }

@@ -79,6 +79,8 @@ class UserResource extends Resource
                     ->searchable(),
                 TextColumn::make('email')
                     ->searchable(),
+                TextColumn::make('formatted_balance')
+                    ->label('Balance'),
                 TextColumn::make('email_verified_at')
                     ->dateTime(),
                 TextColumn::make('updated_at')
