@@ -9,10 +9,12 @@ use App\Models\AccountType;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Card;
 use Filament\Forms\Components\Placeholder;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\Textarea;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
+use Filament\Tables\Columns\SpatieMediaLibraryImageColumn;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -43,11 +45,7 @@ class AccountResource extends Resource
                     ->schema([
                         Textarea::make('description')
                             ->maxLength(255),
-                    ])
-                    ->columnSpan(1),
 
-                Card::make()
-                    ->schema([
                         Placeholder::make('account_type_name')
                             ->label('Account Type')
                             ->content(fn (?Account $record): string => $record ? $record->type->name : '--'),
@@ -69,10 +67,24 @@ class AccountResource extends Resource
                         Placeholder::make('confirmed_at')
                             ->content(fn (?Account $record): string => $record ? $record->confirmed_at?->diffForHumans() ?? '--' : '--'),
                     ])
-                    ->columns(2)
                     ->columnSpan([
                         'lg' => 2,
                     ]),
+
+                Card::make([
+                    SpatieMediaLibraryFileUpload::make('Main Image')
+                        ->collection('main')
+                        ->maxSize(300)
+                        ->required()
+                        ->image(),
+                    SpatieMediaLibraryFileUpload::make('Other images')
+                        ->collection('sub')
+                        ->maxSize(300)
+                        ->image()
+                        ->enableReordering()
+                        ->multiple(),
+                ])
+                    ->columnSpan(1),
             ])
             ->columns(3)
         ;
@@ -82,6 +94,9 @@ class AccountResource extends Resource
     {
         return $table
             ->columns([
+                SpatieMediaLibraryImageColumn::make('main')
+                    ->label('Image')
+                    ->rounded(),
                 TextColumn::make('type.game.name')
                     ->label('Game'),
                 TextColumn::make('type.name')

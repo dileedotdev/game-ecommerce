@@ -9,10 +9,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Account extends Model
+class Account extends Model implements HasMedia
 {
     use HasFactory;
+    use InteractsWithMedia;
 
     protected $fillable = [
         'account_type_id',
@@ -48,6 +51,22 @@ class Account extends Model
             Delete::run("accounts.update.{$key}");
             Delete::run("accounts.delete.{$key}");
         });
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this
+            ->addMediaCollection('main')
+            ->acceptsMimeTypes(['image/jpg', 'image/jpeg', 'image/png', 'image/bmp', 'image/gif', 'image/svg', 'image/webp'])
+            ->withResponsiveImages()
+            ->singleFile()
+        ;
+
+        $this
+            ->addMediaCollection('sub')
+            ->acceptsMimeTypes(['image/jpg', 'image/jpeg', 'image/png', 'image/bmp', 'image/gif', 'image/svg', 'image/webp'])
+            ->withResponsiveImages()
+        ;
     }
 
     public function type(): BelongsTo

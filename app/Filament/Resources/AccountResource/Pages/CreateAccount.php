@@ -8,6 +8,7 @@ use App\Models\Account;
 use App\Models\AccountType;
 use Filament\Facades\Filament;
 use Filament\Forms\Components\Select;
+use Filament\Forms\Components\SpatieMediaLibraryFileUpload;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Wizard\Step;
 use Filament\Resources\Pages\Concerns\HasWizard;
@@ -25,6 +26,7 @@ class CreateAccount extends CreateRecord
     {
         return AccountType::all()
             ->filter(fn (AccountType $type) => Filament::auth()->user()->can('create', [Account::class, $type]))
+            ->load('game')
         ;
     }
 
@@ -45,13 +47,27 @@ class CreateAccount extends CreateRecord
             Step::make('Details')
                 ->description('Add some extra details')
                 ->schema(function ($state, callable $set) {
+                    $inputs = [
+                        SpatieMediaLibraryFileUpload::make('Main Image')
+                            ->collection('main')
+                            ->required()
+                            ->maxSize(300)
+                            ->image(),
+                        SpatieMediaLibraryFileUpload::make('Other Images')
+                            ->collection('sub')
+                            ->label('Other images')
+                            ->image()
+                            ->maxSize(300)
+                            ->enableReordering()
+                            ->multiple(),
+                    ];
+
                     if (!$state['account_type_id']) {
-                        return [];
+                        return $inputs;
                     }
 
                     $fields = AccountType::find($state['account_type_id'])->fields;
 
-                    $inputs = [];
                     foreach ($fields as $field) {
                         $inputs[] = TextInput::make("infos.{$field->getKey()}")
                             ->label($field->name)
