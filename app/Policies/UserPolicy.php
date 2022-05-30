@@ -29,6 +29,11 @@ class UserPolicy
         return $user->hasPermissionTo("users.update.{$model->getKey()}");
     }
 
+    public function updateBalance(User $user, user $model): bool
+    {
+        return $user->hasPermissionTo("users.update_balance.{$model->getKey()}");
+    }
+
     public function deleteAny(User $user): bool
     {
         return $user->hasPermissionTo('users.delete.*');

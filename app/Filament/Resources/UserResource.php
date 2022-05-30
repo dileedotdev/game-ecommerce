@@ -6,11 +6,14 @@ use App\Filament\Resources\UserResource\Pages;
 use App\Filament\Resources\UserResource\RelationManagers;
 use App\Filament\Resources\UserResource\Widgets;
 use App\Models\User;
+use Filament\Facades\Filament;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\Form;
 use Filament\Resources\Resource;
 use Filament\Resources\Table;
+use Filament\Tables\Actions\Action;
 use Filament\Tables\Columns\TextColumn;
 use Filament\Tables\Filters\Filter;
 use Illuminate\Contracts\Database\Eloquent\Builder;
@@ -90,6 +93,37 @@ class UserResource extends Resource
                 Filter::make('Verified')
                     ->toggle()
                     ->query(fn (Builder $query): Builder => $query->whereNotNull('email_verified_at')),
+            ])
+            ->pushActions([
+                Action::make('balance')
+                    ->label('Update balance')
+                    ->icon('heroicon-o-currency-dollar')
+                    ->visible(fn (User $record): bool => Filament::auth()->user()->can('updateBalance', $record))
+                    ->form([
+                        Radio::make('type')
+                            ->required()
+                            ->options([
+                                'increase' => 'Increase',
+                                'decrease' => 'Decrease',
+                            ]),
+                        TextInput::make('amount')
+                            ->integer()
+                            ->required(),
+                        TextInput::make('description')
+                            ->required()
+                            ->maxLength(255),
+                    ])
+                    ->action(function (User $record, array $data): void {
+                        if ('increase' === $data['type']) {
+                            $record->deposit($data['amount'], [
+                                'description' => $data['description'],
+                            ]);
+                        } else {
+                            $record->withdraw($data['amount'], [
+                                'description' => $data['description'],
+                            ]);
+                        }
+                    }),
             ])
         ;
     }
