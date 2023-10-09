@@ -45,7 +45,7 @@ jobs:
           args: --config=.php-cs-fixer.php --allow-risky=yes
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Php-cs-fixer Fixed!'
           commit_options: '--no-verify'
@@ -76,7 +76,7 @@ jobs:
         run: npx eslint --fix "resources/js/**/*.{js,ts,vue}"
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Eslint Fixed!'
           commit_options: '--no-verify'
@@ -107,7 +107,7 @@ jobs:
         run: npx prettier --write "resources/js/**/*.{js,ts,vue}"
 
       - name: Commit changes
-        uses: stefanzweifel/git-auto-commit-action@v4
+        uses: stefanzweifel/git-auto-commit-action@v5
         with:
           commit_message: 'Prettier Fixed!'
           commit_options: '--no-verify'
